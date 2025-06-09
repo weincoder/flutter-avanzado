@@ -1,4 +1,7 @@
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
+import 'package:intro_isolates/isolate_example.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,17 +19,43 @@ class HomePage extends StatelessWidget {
             const Text(
               'Welcome to the Isolates Intro!',
             ),
-            ElevatedButton(
-              onPressed: () {
-                // Placeholder for future functionality
-              },
-              child: const Text('Start'),
+            const SizedBox(height: 20),
+            Image.asset(
+              'assets/images/gif/cat.gif',
+              width: 100,
+              height: 100,
             ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Placeholder for future functionality
+                heavyProcess().then((result) {
+                  print("Heavy process completed with result: $result");
+                  // You can update the UI or perform other actions with the result
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Heavy process result: $result")),
+                  );
+                });
               },
-              child: const Text('Learn More'),
+              child: const Text('Heavy Process'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                final receivePort = ReceivePort();
+                await Isolate.spawn(
+                    IsolateExample.heavyProcess, receivePort.sendPort);
+                receivePort.listen((message) {
+                  print("Received message from isolate: $message");
+                  // You can update the UI or perform other actions with the message
+                  // For example, you could show a dialog or update a state variable
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Isolate result: $message")),
+                  );
+                });
+                print("Isolate spawned and listening for messages.");
+              },
+              child: const Text('Run Isolate Example'),
             ),
           ],
         ),
