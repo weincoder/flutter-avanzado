@@ -22,8 +22,8 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 20),
             Image.asset(
               'assets/images/gif/cat.gif',
-              width: 100,
-              height: 100,
+              width: 300,
+              height: 300,
             ),
             const SizedBox(height: 20),
             ElevatedButton(
