@@ -4,86 +4,148 @@ sidebar_position: 1
 
 # Introducción a Isolates
 
-Los isolates son la forma en que Dart implementa la concurrencia. Cada isolate es un hilo de ejecución aislado con su propio heap de memoria.
+Los **isolates** son la forma en que Dart implementa la concurrencia. Cada isolate es un hilo de ejecución aislado con su propio heap de memoria, lo que significa que **no comparten estado** entre ellos.
 
-## ¿Por qué Isolates?
+En este módulo usaremos el proyecto [`intro_isolates`](https://github.com/weincoder/flutter-avanzado/tree/main/isolates/intro_isolates) como ejemplo práctico para entender cómo y cuándo usarlos.
 
-En Dart, el modelo de concurrencia se basa en isolates porque:
+## 🎯 ¿Qué aprenderás?
 
-1. **Seguridad de Memoria**: Cada isolate tiene su propio heap, evitando race conditions
-2. **Rendimiento**: No hay contención de locks como en otros lenguajes
-3. **Simplicidad**: Comunicación basada en paso de mensajes
+- Qué es un isolate y cómo funciona el event loop de Dart
+- Por qué un cómputo pesado **congela** tu app
+- Cómo mover trabajo pesado a un isolate separado
+- Comunicación entre isolates con `SendPort` y `ReceivePort`
 
-## Conceptos Clave
+## 🐱 El proyecto: intro_isolates
 
-### Main Isolate
+Nuestro ejemplo es una app Flutter sencilla con una animación GIF de un gato y dos botones:
 
-Tu aplicación Flutter comienza en el main isolate, donde se ejecuta todo el código de la UI.
+| Botón | Qué hace | ¿La UI se congela? |
+|---|---|---|
+| **Heavy Process** | Ejecuta 1 billón de iteraciones en el **main isolate** | ✅ Sí, el GIF se congela |
+| **Run Isolate Example** | Ejecuta el mismo cálculo en un **isolate separado** | ❌ No, el GIF sigue animándose |
 
-### Event Loop
+> 💡 **La clave**: El GIF animado actúa como un indicador visual del estado del hilo principal. Si se congela, significa que el main isolate está bloqueado.
 
-El main isolate ejecuta código en un modelo de event loop:
+### Estructura del proyecto
 
 ```
-┌─────────────────────────────────┐
-│     Ejecuta Código Síncrono     │
-└─────────────────────────────────┘
-              ↓
-┌─────────────────────────────────┐
-│   Procesa Eventos y Callbacks   │
-└─────────────────────────────────┘
-              ↓
-         (Repite)
+intro_isolates/
+├── lib/
+│   ├── main.dart              # Punto de entrada
+│   ├── app.dart               # MaterialApp
+│   ├── home_page.dart         # UI con los dos botones + GIF
+│   └── isolate_example.dart   # Clase con el cómputo en isolate
+└── assets/
+    └── images/gif/
+        └── cat.gif            # Indicador visual de bloqueo
 ```
 
-### Bloqueo del Main Isolate
+## 🧠 ¿Por qué Isolates?
 
-Si el main isolate se bloquea, toda la UI se congela:
+En Dart, **todo tu código se ejecuta en un solo hilo** llamado el **main isolate**. Esto incluye:
+
+- El renderizado de la UI (60/120 fps)
+- Los event handlers (taps, gestures)
+- Las operaciones asíncronas (`Future`, `async/await`)
+
+### El Event Loop
+
+```
+┌─────────────────────────────────────┐
+│     Ejecuta Código Síncrono         │
+│     (build, layout, paint)          │
+└─────────────────────────────────────┘
+                  ↓
+┌─────────────────────────────────────┐
+│   Procesa Microtasks y Events       │
+│   (Future callbacks, timers, I/O)   │
+└─────────────────────────────────────┘
+                  ↓
+              (Repite)
+```
+
+> ⚠️ **Importante**: `async/await` **no crea hilos nuevos**. Solo programa callbacks en el event loop del **mismo** isolate. Si tu `Future` contiene un `for` de mil millones de iteraciones, el main isolate se bloquea igual.
+
+### El problema: bloquear el main isolate
+
+Así es como nuestro proyecto demuestra el problema. En `home_page.dart`, el método `heavyProcess()` ejecuta un cálculo pesado directamente en el main isolate:
 
 ```dart
-// ❌ MAL - Bloquea la UI
-void procesarDatos() {
-  for (int i = 0; i < 1000000000; i++) {
-    // Operación pesada
-  }
-}
+// 📂 lib/home_page.dart
 
-// ✅ BIEN - Usa un isolate
+// ❌ PROBLEMA: Esto bloquea la UI completamente
+Future<double> heavyProcess() async {
+  print("Comienza el cómputo pesado...");
+  double result = 0.0;
+  for (int i = 0; i < 1000000000; i++) {
+    result += i; // Operación ficticia
+  }
+  print("El cómputo pesado ha terminado.");
+  return result;
+}
+```
+
+Aunque la función es `async` y retorna un `Future`, **el `for` loop es síncrono** y bloquea completamente el event loop. Resultado: el GIF del gato se congela, los botones no responden, la app parece muerta.
+
+### La solución: mover el cómputo a otro isolate
+
+La misma operación, pero ejecutada en un isolate separado, no bloquea la UI:
+
+```dart
+// 📂 lib/isolate_example.dart
+
 import 'dart:isolate';
 
-void procesarDatos() async {
-  await compute(operacionPesada, null);
-}
-
-void operacionPesada(dynamic _) {
-  for (int i = 0; i < 1000000000; i++) {
-    // Operación pesada
+class IsolateExample {
+  static heavyProcess(SendPort sendPort) {
+    print("Comienza el cómputo pesado... Isolate");
+    double result = 0.0;
+    for (int i = 0; i < 1000000000; i++) {
+      result += i;
+    }
+    sendPort.send(result);
+    print("El cómputo pesado ha terminado. Isolate");
   }
 }
 ```
 
-## Casos de Uso
+El GIF sigue animándose mientras el isolate trabaja en segundo plano. Cuando termina, envía el resultado de vuelta al main isolate a través del `SendPort`.
 
-1. **Procesamiento de imágenes**: Redimensionar, filtrar
-2. **Cálculos complejos**: Análisis de datos, criptografía
-3. **JSON parsing**: Para datos grandes
-4. **Video/Audio**: Encoding, decoding
+## 🔑 Conceptos Clave
 
-## Ventajas y Desventajas
+| Concepto | Descripción |
+|---|---|
+| **Isolate** | Hilo de ejecución con su propia memoria (heap). No comparte estado. |
+| **Main Isolate** | El isolate donde corre tu app Flutter (UI, events). |
+| **SendPort** | Canal para **enviar** mensajes a otro isolate. |
+| **ReceivePort** | Canal para **recibir** mensajes de otros isolates. |
+| **Event Loop** | Ciclo que procesa código síncrono y callbacks en un isolate. |
 
-### Ventajas ✅
-- Evita bloqueos de UI
-- Seguro contra race conditions
-- Fácil de razonar
+## 📦 Casos de Uso Reales
 
-### Desventajas ❌
-- Comunicación lenta entre isolates
-- Overhead de creación
-- Complejidad adicional
+| Caso de Uso | Ejemplo |
+|---|---|
+| 🧮 Cálculos intensivos | Algoritmos matemáticos, simulaciones |
+| 🖼 Procesamiento de imágenes | Redimensionar, aplicar filtros, compresión |
+| 📊 Parsing de datos grandes | JSON/XML de APIs con miles de registros |
+| 🔐 Criptografía | Hashing, encriptación/desencriptación |
+| 🎬 Audio/Video | Encoding, decoding, transformaciones |
 
-## Próximos Pasos
+## ✅ Ventajas y ❌ Desventajas
 
-En las siguientes secciones aprenderás:
-- Cómo crear isolates básicos
-- Patrones avanzados de comunicación
-- Mejores prácticas y optimización
+### Ventajas
+- 🚀 La UI nunca se congela
+- 🔒 Sin race conditions (no hay memoria compartida)
+- 🧩 Fácil de razonar sobre el flujo de datos
+
+### Desventajas
+- 📨 La comunicación es por paso de mensajes (serialización)
+- ⏱ Overhead de creación de isolates (~50-150ms)
+- 🧠 Mayor complejidad en el código
+
+## 🗺 Próximos Pasos
+
+| Sección | Contenido |
+|---|---|
+| [Isolates Básico](./basico) | Desglose completo del código de `intro_isolates`: `Isolate.spawn()`, `ReceivePort`, flujo de comunicación |
+| [Isolates Avanzado](./avanzado) | Comunicación bidireccional, pool de isolates, Streams, y cómo evolucionar el proyecto |
