@@ -1,11 +1,119 @@
+/* ===== Features Section ===== */
 .features {
-  display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  width: 100%;
+  padding: 4rem 0 5rem;
+  background: linear-gradient(180deg, #0f0a18 0%, #13102a 100%);
 }
 
-.featureSvg {
-  height: 200px;
-  width: 200px;
+/* Section Header */
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 3rem;
 }
+
+.sectionTitle {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 0.75rem;
+}
+
+.sectionSubtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.55);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Feature Cards */
+.featureLink {
+  text-decoration: none !important;
+  display: block;
+  height: 100%;
+}
+
+.featureLink:hover {
+  text-decoration: none !important;
+}
+
+.featureCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(165, 128, 245, 0.1);
+  border-radius: 1rem;
+  padding: 1.75rem;
+  margin-bottom: 1.5rem;
+  height: 100%;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+.featureCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #6C3CE0, #027DFD);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.featureCard:hover {
+  background: rgba(108, 60, 224, 0.08);
+  border-color: rgba(165, 128, 245, 0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(108, 60, 224, 0.15);
+}
+
+.featureCard:hover::before {
+  opacity: 1;
+}
+
+.featureEmoji {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.featureTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: white !important;
+  margin-bottom: 0.5rem;
+}
+
+.featureDescription {
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.featureArrow {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #A580F5;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.featureCard:hover .featureArrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ===== Responsive ===== */
+@media screen and (max-width: 996px) {
+  .features {
+    padding: 3rem 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.75rem;
+  }
+}
+

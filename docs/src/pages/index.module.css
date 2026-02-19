@@ -1,23 +1,320 @@
 /**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
+ * Flutter Avanzado - Homepage Styles
  */
 
+/* ===== Hero Section ===== */
 .heroBanner {
-  padding: 4rem 0;
+  background: linear-gradient(135deg, #1a1025 0%, #2d1b69 40%, #6C3CE0 100%);
+  padding: 5rem 0 6rem;
+  position: relative;
+  overflow: hidden;
+  color: white;
+}
+
+.heroBanner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(2, 125, 253, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.heroBanner::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(108, 60, 224, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.heroInner {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+}
+
+.heroText {
+  flex: 1;
+  min-width: 0;
+}
+
+.heroBadge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  padding: 0.35rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.02em;
+}
+
+.heroTitle {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.heroTitleAccent {
+  background: linear-gradient(135deg, #A580F5, #027DFD);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+.heroDescription {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 520px;
+}
+
+.heroButtons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.heroButtonPrimary {
+  background: linear-gradient(135deg, #6C3CE0, #027DFD) !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 600 !important;
+  border-radius: 0.75rem !important;
+  padding: 0.75rem 1.75rem !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 15px rgba(108, 60, 224, 0.35) !important;
+}
+
+.heroButtonPrimary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(108, 60, 224, 0.5) !important;
+  color: white !important;
+}
+
+.heroButtonSecondary {
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  font-weight: 600 !important;
+  border-radius: 0.75rem !important;
+  padding: 0.75rem 1.75rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.heroButtonSecondary:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  transform: translateY(-2px) !important;
+  color: white !important;
+}
+
+/* ===== Code Preview Card ===== */
+.heroVisual {
+  flex: 0 0 420px;
+}
+
+.heroCard {
+  background: #1a1025;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid rgba(165, 128, 245, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(108, 60, 224, 0.15);
+}
+
+.heroCardHeader {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.heroCode {
+  margin: 0;
+  padding: 1.25rem 1.5rem;
+  background: transparent;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: #c4b5fd;
+  overflow-x: auto;
+}
+
+.heroCode code {
+  background: none !important;
+  border: none !important;
+  color: #c4b5fd !important;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ===== Stats Section ===== */
+.stats {
+  background: linear-gradient(180deg, #0f0a18 0%, #1a1025 100%);
+  padding: 0;
+  margin-top: -2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  background: rgba(108, 60, 224, 0.06);
+  border: 1px solid rgba(108, 60, 224, 0.15);
+  border-radius: 1rem;
+  padding: 2.5rem 2rem;
+  backdrop-filter: blur(12px);
+  transform: translateY(-2rem);
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.statNumber {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #A580F5, #027DFD);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.statLabel {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+}
+
+/* ===== CTA Section ===== */
+.cta {
+  background: linear-gradient(135deg, #1a1025 0%, #2d1b69 50%, #6C3CE0 100%);
+  padding: 5rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
 }
 
+.cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(165, 128, 245, 0.3), transparent);
+}
+
+.ctaInner {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.ctaTitle {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.ctaText {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ===== Responsive ===== */
 @media screen and (max-width: 996px) {
   .heroBanner {
-    padding: 2rem;
+    padding: 3rem 1.5rem 4rem;
+  }
+
+  .heroInner {
+    flex-direction: column;
+    text-align: center;
+    gap: 2.5rem;
+  }
+
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+
+  .heroDescription {
+    max-width: 100%;
+  }
+
+  .heroButtons {
+    justify-content: center;
+  }
+
+  .heroVisual {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1.5rem;
   }
 }
 
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+@media screen and (max-width: 540px) {
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroButtons {
+    flex-direction: column;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ctaButtons {
+    flex-direction: column;
+    align-items: center;
+  }
 }

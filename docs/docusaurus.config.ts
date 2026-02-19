@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Flutter Avanzado',
   tagline: 'Aprende Flutter con conceptos avanzados y casos de uso reales',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -15,15 +15,16 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://flutter-avanzado.example.com',
+  url: 'https://weincoder.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: '/flutter-avanzado/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'flutter-community', // Usually your GitHub org/user name.
+  organizationName: 'weincoder', // Usually your GitHub org/user name.
   projectName: 'flutter-avanzado', // Usually your repo name.
+  trailingSlash: false,
 
   onBrokenLinks: 'throw',
 
@@ -150,11 +151,12 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Flutter Avanzado. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Flutter Avanzado — Weincode. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+      additionalLanguages: ['dart', 'bash', 'json', 'yaml', 'kotlin', 'swift'],
     },
   } satisfies Preset.ThemeConfig,
 };
