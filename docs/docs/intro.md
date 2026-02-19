@@ -44,7 +44,7 @@ Cada sección incluye:
 
 ## Comunidad
 
-Únete a nuestro [canal de Discord](https://discord.gg/KwqNFCAC) para estar al tanto de nuevas características y discutir con la comunidad.
+Únete a nuestro [canal de Discord](https://discord.gg/mtJWZFZE7R) para estar al tanto de nuevas características y discutir con la comunidad.
 
 ## Comenzar
 

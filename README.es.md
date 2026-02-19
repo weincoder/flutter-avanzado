@@ -128,7 +128,7 @@ Nuestro curso gratuito de Flutter **Weinflu**:
 Únete a nuestro Discord para estar al tanto de nuevo contenido y discutir con la comunidad:
 
 <div align="center">
-  <a href="https://discord.gg/KwqNFCAC" target="_blank">
+  <a href="https://discord.gg/mtJWZFZE7R" target="_blank">
     <img src="https://img.shields.io/badge/Únete%20a%20nuestro-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord" />
   </a>
 </div>

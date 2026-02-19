@@ -35,7 +35,7 @@ function HomepageHeader() {
               </Link>
               <Link
                 className={clsx('button button--lg', styles.heroButtonSecondary)}
-                href="https://discord.gg/KwqNFCAC">
+                href="https://discord.gg/mtJWZFZE7R">
                 💬 Unirse al Discord
               </Link>
             </div>

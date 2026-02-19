@@ -46,7 +46,7 @@ A lo largo de este curso cubrimos:
 ## Comunidad
 
 Mantente conectado:
-- 💬 [Discord de la comunidad](https://discord.gg/KwqNFCAC)
+- 💬 [Discord de la comunidad](https://discord.gg/mtJWZFZE7R)
 - 📺 [Weinflu en YouTube](https://www.youtube.com/playlist?list=PL6PxPH2IZvJo7P03wysGBgZizYAu90tLn)
 
 ## ¡Gracias!
